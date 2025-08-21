@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="theme-color" content="#9370db" />
+    <link rel="apple-touch-icon" href="images/icon.png" /> <!-- optional, if you have an icon -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>My Vet, My Love</title>
+
+    <!-- Fonts & Styles -->
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300;400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <!-- Menu Toggle Button (hamburger) -->
+    <div class="menu-toggle" id="menuToggle">
+        <img src="images/menu-icon.png" alt="Menu" class="menu-icon" />
+    </div>
+
+    <!-- Store Button -->
+    <div class="store-toggle" id="storeToggle">
+        <img src="images/store.png" alt="Store" class="store-icon" />
+    </div>
+
+    <!-- Store Slider -->
+    <div class="store-panel" id="storePanel">
+        <h2>Store</h2>
+        <div class="store-items" id="storeItems"></div>
+    </div>
+
+
+    <!-- Coin Display -->
+    <div class="coin-display" id="coinDisplay">
+        <img src="images/dogecoin.png" alt="Coins" class="coin-icon" />
+        <span id="coinCount">0</span>
+    </div>
+
+    <!-- Slide-Out Navigation Menu -->
+    <ul class="menu" id="menu">
+        <li><a href="notes.html">Notes</a></li>
+        <li><a href="planner.html">Study Planner</a></li>
+        <li><a href="quiz.html">Take a Quiz</a></li>
+        <li><a href="flashcards.html">Flashcards</a></li>
+        <li><a href="funfacts.html">Animal of The Day</a></li>
+        <li><a href="comfort.html">If You're Tired...</a></li>
+    </ul>
+
+    
+    
+
+    <!-- Background Overlay (clicks to close menu) -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Main App Content -->
+    <main class="fullscreen-container">
+        <section class="content safe-top">
+            <h1>My Vet, My Love</h1>
+            <p>made with love</p>
+
+            <div class="animal-section">
+                <!-- Central image -->
+                <div class="timer-ring">
+                    <svg class="slider-ring" width="100%" height="100%" viewbox="0 0 100 100">
+                        <circle class="slider-bg" cx="50" cy="50" r="45" stroke-width="10" fill="none"/>
+                        <circle class="slider-fill" cx="50" cy="50" r="45" stroke-width="10" fill="none" stroke-dasharray="282.6" stroke-dashoffset="282.6"/>
+                    </svg>
+                    <img id="animalImage" src="images/sadcat.jpg" alt="Animal" />
+                </div>
+                <div class="timer-display-bottom" id="timerDisplay">25:00</div>
+                <div class="total-time">
+                    Total Time: <span id="totalTimeDisplay">0m</span>
+                </div>
+                <button id="startButton" class="start-button">Start</button>
+
+                <!-- Animal Picker Menu -->
+                <div id="animalPicker" class="animal-picker">
+                    <p>Choose your animal:</p>
+                    <div class="animal-options">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+</main>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

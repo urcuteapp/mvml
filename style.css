@@ -1,0 +1,434 @@
+/* ================== RESET & GLOBAL STYLES ================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  font-family: 'Comic Neue', sans-serif;
+  background-color: #9370db;
+}
+
+/* ================== FULLSCREEN LAYOUT ================== */
+.fullscreen-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content.safe-top {
+  margin-top: 6.5rem;
+  color: white;
+  text-align: center;
+}
+
+/* ================== MENU TOGGLE ================== */
+.menu-toggle {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 101;
+  cursor: pointer;
+}
+
+.menu-toggle img.menu-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.coin-display {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 5px 10px;
+  border-radius: 20px;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  z-index: 101;
+}
+
+.coin-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+/* ================== STORE TOGGLE ================== */
+.store-toggle {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  cursor: pointer;
+}
+.store-toggle img.store-icon {
+  width: 30px;
+  height: 30px;
+}
+
+/* ================== STORE PANEL ================== */
+.store-panel {
+  position: fixed;
+  bottom: -100%;
+  left: 0;
+  width: 100%;
+  height: 80%;
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -6px 20px rgba(0,0,0,0.25);
+  z-index: 200;
+  transition: bottom 0.4s ease;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.store-panel.active {
+  bottom: 0;
+}
+
+.store-panel h2 {
+  text-align: center;
+  color: #4b0082;
+  margin-bottom: 1rem;
+}
+
+.store-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+}
+
+.store-item {
+  background: #f7f7f7;
+  margin: 4px 0;
+  font-size: 0.85rem;
+  color: #333;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.store-item img {
+  width: 90px;
+  height: 90px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
+
+.store-item button {
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  border: none;
+  border-radius: 6px;
+  background: #9370db;
+  color: white;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.store-item button:disabled {
+  background: gray;
+  cursor: not-allowed;
+}
+
+.store-item p {
+  margin: 0px 0;
+  font-size: 0.85rem;
+  color: #333;
+  font-weight: 500;
+  text-align: center;
+}
+
+.store-item button {
+  margin-top: 20px;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  background: #9370db;
+  color: #fff;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  width: 80%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  transition: background 0.2s ease;
+}
+
+/* ================== SIDE MENU ================== */
+.menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  max-width: 80%;
+  height: 100vh;
+  background: white;
+  transform: translateX(-110%);
+  transition: transform 0.3s ease;
+  z-index: 100;
+  list-style: none;
+  padding-top: 4rem;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.menu li a {
+  display: block;
+  padding: 1rem 1.5rem;
+  color: #333;
+  text-decoration: none;
+  border-bottom: 1px solid #eee;
+}
+
+.menu.active {
+  transform: translateX(0);
+}
+
+/* ================== OVERLAY ================== */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0);
+  z-index: 99;
+  display: block;
+  pointer-events: none;
+  transition: background 0.3s ease;
+}
+
+.overlay.active {
+  background: rgba(0, 0, 0, 0.3);
+  pointer-events: auto;
+}
+
+/* ================== ANIMAL SECTION ================== */
+.animal-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 4rem;
+  position: relative;
+}
+
+/* ================== TIMER RING & IMAGE ================== */.timer-ring {
+  width: 70vw;
+  max-width: 300px;
+  height: 70vw;
+  max-height: 300px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.timer-ring img {
+  width: 70%;
+  height: 70%;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* subtle depth */
+}
+
+.timer-ring img:active {
+  transform: scale(0.95);
+}
+
+/* ================== SLIDER RING ================== */
+.slider-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: rotate(-90deg);
+  pointer-events: none;
+}
+
+.slider-bg {
+  stroke: #30d5c8;
+  stroke-width: 9;
+}
+
+.slider-fill {
+  stroke: rgba(255, 255, 255, 0.6);
+  stroke-linecap: round;
+  stroke-width: 9;
+  transition: stroke-dashoffset 0.2s linear;
+  pointer-events: auto;
+}
+
+/* ================== TIMER DISPLAY ================== */
+.timer-display-bottom {
+  position: fixed;
+  bottom: 8rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 5.5rem;
+  color: white;
+  font-weight: lighter;
+  text-align: center;
+  pointer-events: none;
+}
+
+/* ================== START BUTTON ================== */
+.start-button {
+  position: fixed;
+  bottom: 5rem;
+  font-family: 'Comic Neue', sans-serif;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1rem;
+  padding: 8px 45px;
+  border: none;
+  border-radius: 8px;
+  background-color: #db7093;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 3px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.1s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.start-button:active {
+  transform: translateX(-50%) scale(0.95);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.start-button.pulse {
+  animation: pulseAnimation 1s infinite;
+}
+
+@keyframes pulseAnimation {
+  0% {
+    transform: translateX(-50%) scale(1);
+    background-color: #db7093;
+    box-shadow: 3px 6px rgba(0, 0, 0, 0.2);
+  }
+  50% {
+    transform: translateX(-50%) scale(1.1);
+    background-color: #e184a3;
+    box-shadow: 4px 8px rgba(0, 0, 0, 0.2);;
+  }
+  100% {
+    transform: translateX(-50%) scale(1);
+    background-color: #db7093;
+    box-shadow: 3px 6px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* ================== ANIMAL PICKER ================== */
+.animal-picker {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 360px;
+  background: #fff;
+  padding: 15px 20px;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, bottom 0.3s ease, transform 0.3s ease;
+}
+
+.animal-picker.active {
+  bottom: 55%;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.animal-picker p {
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #4b0082;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.animal-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+}
+
+.animal-options .animal-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.animal-options .animal-item img {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 2px solid transparent;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.animal-options .animal-item:hover img {
+  transform: scale(1.1);
+  border-color: #9370db;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.animal-options .animal-item span {
+  margin-top: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+}
+
+.animal-options img {
+  width: 80px;
+  max-width: 80px;
+  border-radius: 15px;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.animal-options img:hover {
+  transform: scale(1.1);
+  border-color: #9370db;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+/* Name under each mood */
+.animal-options p {
+  margin-top: 5px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #333;
+  text-align: center;
+}
+
+.total-time {
+  margin-top: 1rem;
+  padding: 0.3rem 0.8rem;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  font-size: 0.9rem;
+  color: white;
+  font-weight: bold;
+  pointer-events: none;
+}
