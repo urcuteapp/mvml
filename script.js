@@ -7,41 +7,19 @@ document.addEventListener("DOMContentLoaded", function () {
   const coinCountEl = document.getElementById("coinCount");
   coinCountEl.textContent = coins;
 
-  // Reward mapping: 10 → 1, 15 → 2, 20 → 3, ..., 120 → 23
-  const rewardMapping = {
-    10: 1,
-    15: 2,
-    20: 3,
-    25: 4,
-    30: 5,
-    35: 6,
-    40: 7,
-    45: 8,
-    50: 9,
-    55: 10,
-    60: 11,
-    65: 12,
-    70: 13,
-    75: 14,
-    80: 15,
-    85: 16,
-    90: 17,
-    95: 18,
-    100: 19,
-    105: 20,
-    110: 21,
-    115: 22,
-    120: 23
-  };
+  // FIX: simpler formula instead of static mapping
+  function getReward(minutes) {
+    if (minutes < 10) return 0;
+    return Math.floor((minutes - 5) / 5); // 10m=1, 15m=2, 20m=3, 25m=4...
+  }
 
   // Function to add coins
   function addCoins(minutes) {
-    const reward = rewardMapping[minutes] || 1; // fallback to 1 if something goes wrong
+    const reward = getReward(minutes);
     coins += reward;
     localStorage.setItem("coins", coins);
     coinCountEl.textContent = coins;
   }
-
 
   // ================= MENU TOGGLE =================
   const menuToggle = document.getElementById('menuToggle');
@@ -80,63 +58,64 @@ document.addEventListener("DOMContentLoaded", function () {
   // Load unlocked moods
   let unlockedMoods = JSON.parse(localStorage.getItem("unlockedMoods")) || [];
 
+  function updateCoins(newAmount) {
+    coins = newAmount;
+    localStorage.setItem("coins", coins);
+    coinCountEl.textContent = coins;
+    renderStore();
+  }
+
   // Render store
   function renderStore() {
     storeItemsEl.innerHTML = "";
     moodsForSale.forEach(mood => {
-      if (unlockedMoods.includes(mood.name)) return; // already bought
-
       const item = document.createElement("div");
       item.classList.add("store-item");
+
+      let buttonHTML;
+      if (unlockedMoods.includes(mood.img)) {
+        buttonHTML = `<button disabled>BOUGHT</button>`; // ⭐ FIX
+      } else {
+        buttonHTML = `<button ${coins < mood.price ? "disabled" : ""}>Buy</button>`;
+      }
+
       item.innerHTML = `
         <img src="images/${mood.img}" alt="${mood.name}">
         <p>${mood.name}</p>
         <p>${mood.price} coins</p>
-        <button ${coins < mood.price ? "disabled" : ""}>Buy</button>
+        ${buttonHTML}
       `;
 
       const buyBtn = item.querySelector("button");
-      buyBtn.addEventListener("click", () => {
-        if (coins >= mood.price) {
-          coins -= mood.price;
-          coinCountEl.textContent = coins;
-          localStorage.setItem("coins", coins);
-
-          unlockedMoods.push(mood.name);
-          localStorage.setItem("unlockedMoods", JSON.stringify(unlockedMoods));
-
-          // Add to picker
-          const newImg = document.createElement("img");
-          newImg.src = `images/${mood.img}`;
-          newImg.alt = mood.name;
-          newImg.setAttribute("data-mood", mood.img);
-          document.querySelector(".animal-options").appendChild(newImg);
-
-          renderStore();
-        } else {
-          alert("Not enough coins!");
-        }
-      });
+      if (!unlockedMoods.includes(mood.img)) {
+        buyBtn.addEventListener("click", () => {
+          if (coins >= mood.price) {
+            updateCoins(coins - mood.price);
+            unlockedMoods.push(mood.img); // ⭐ FIX: save by img name
+            localStorage.setItem("unlockedMoods", JSON.stringify(unlockedMoods));
+            renderAnimalPicker(); // ⭐ FIX: update picker immediately
+            renderStore(); // refresh store
+          } else {
+            alert("Not enough coins!");
+          }
+        });
+      }
 
       storeItemsEl.appendChild(item);
     });
   }
 
-  // Toggle store open/close
   storeToggle.addEventListener("click", () => {
     storePanel.classList.toggle("active");
   });
 
-  // Close when clicking outside
   document.addEventListener("click", (e) => {
     if (!storePanel.contains(e.target) && e.target !== storeToggle && !storeToggle.contains(e.target)) {
       storePanel.classList.remove("active");
     }
   });
 
-  // INIT
   renderStore();
-
 
   // ================= iOS FULLSCREEN HEIGHT =================
   function setVh() {
@@ -166,6 +145,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const moodImage = e.target.getAttribute("data-mood");
       const moodName = moodImage.replace(/\.[^/.]+$/, "");
       animalImage.src = `images/${moodImage}`;
+      localStorage.setItem("currentMood", moodImage); // ⭐ keep forever
+
       animalPicker.classList.remove("active");
       console.log("Sending mood:", moodImage);
 
@@ -289,10 +270,11 @@ document.addEventListener("DOMContentLoaded", function () {
       if (timeLeft <= 0) {
         clearInterval(countdownInterval);
         countdownRunning = false;
-        startButton.textContent = "Start";
+        startButton.textContent = "Start"; // FIX: auto reset to Start
+        setSlider(selectedMinutes);        // FIX: reset slider position
         addCoins(selectedMinutes);
 
-        alert(`Pomodoro complete! +${rewardMapping[selectedMinutes] || 1} coins`);
+        alert(`Pomodoro complete! +${getReward(selectedMinutes)} coins`);
       }
       timeLeft--;
     }, 1000);
@@ -340,18 +322,19 @@ document.addEventListener("DOMContentLoaded", function () {
     { name: "Tired Cat", img: "tiredcat.jpg" }
   ];
 
-  // Merge default + unlocked moods
+  // ⭐ FIX: merge unlocked moods properly
   function renderAnimalPicker() {
     const animalOptions = document.querySelector(".animal-options");
-    animalOptions.innerHTML = ""; // clear existing
+    animalOptions.innerHTML = "";
 
-    const unlockedMoods = JSON.parse(localStorage.getItem("unlockedMoods")) || [];
     const allMoods = [...defaultMoods];
 
-    // Add unlocked moods from store dynamically
-    unlockedMoods.forEach(moodName => {
-      if (!allMoods.some(m => m.img === moodName)) {
-        allMoods.push({ name: moodName.replace(/([A-Z])/g, ' $1').replace(/\b\w/g, c => c.toUpperCase()), img: moodName });
+    unlockedMoods.forEach(imgName => {
+      if (!allMoods.some(m => m.img === imgName)) {
+        allMoods.push({
+          name: imgName.replace(/\.[^/.]+$/, ""),
+          img: imgName
+        });
       }
     });
 
@@ -366,7 +349,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Call initially and after unlocking new moods
   renderAnimalPicker();
 
 });
