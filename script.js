@@ -2,6 +2,13 @@ console.log("JS is running");
 
 document.addEventListener("DOMContentLoaded", function () {
 
+    // --- POP SOUND FUNCTION ---
+  function playPop() {
+    const pop = new Audio("sounds/pop.mp3"); // make sure you have sounds/pop.mp3
+    pop.volume = 0.5; // adjust 0.0 - 1.0
+    pop.play();
+  }
+
   // ================= COIN SYSTEM =================
   let coins = parseInt(localStorage.getItem("coins")) || 0;
   const coinCountEl = document.getElementById("coinCount");
@@ -351,4 +358,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   renderAnimalPicker();
 
+    // --- ADD POP SOUND TO ALL CLICKABLES ---
+  document.querySelectorAll("button, .menu-btn, .shop-btn, .coin-btn, img, a").forEach(el => {
+    el.addEventListener("click", () => {
+      playPop();
+    });
+  });
+
 });
+
