@@ -359,6 +359,12 @@ html, body {
   text-align: center;
 }
 
+.animal-picker {
+    max-height: 250px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
 .animal-options {
   display: flex;
   flex-wrap: wrap;
@@ -432,3 +438,4 @@ html, body {
   font-weight: bold;
   pointer-events: none;
 }
+
